@@ -64,6 +64,21 @@ SUDO_USERS = [8532700793]
 # ✅ Multiple AUTH CHANNELS allowed
 AUTH_CHANNELS = [-1002605113558,-1002663510614]  # Add more channel IDs here
 
+TARGET_GROUP_ID = -100XXXXXXXXXX  # <--- यहाँ अपने Telegram Group (Forum) की ID डालें
+
+created_topics = {}
+
+async def get_or_create_topic(client, chat_id, topic_name):
+    if topic_name in created_topics:
+        return created_topics[topic_name]
+    try:
+        topic = await client.create_forum_topic(chat_id=chat_id, title=topic_name)
+        created_topics[topic_name] = topic.id
+        return topic.id
+    except Exception as e:
+        print(f"Topic Error: {e}")
+        return None
+        
 # Function to check if a user is authorized
 def is_authorized(user_id: int) -> bool:
     return (
